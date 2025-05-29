@@ -18,17 +18,21 @@ const routes: Routes = [
     loadComponent: () => import('./blog-form/blog-form.component').then(m => m.BlogFormComponent)
   },
 
+
+  { 
+    path: 'feedback', 
+    loadComponent: () => import('./feedback-form/feedback-form.component').then(m => m.FeedbackFormComponent)
+  },
+
+
   {
     path: ':id',
     loadComponent: () =>
       import('./blog-detail/blog-detail.component').then(m => m.BlogDetailComponent),
 
-  },
-
-  { 
-    path: 'feedback', 
-    loadComponent: () => import('./feedback-form/feedback-form.component').then(m => m.FeedbackFormComponent)
   }
+
+  
 
 
 ];

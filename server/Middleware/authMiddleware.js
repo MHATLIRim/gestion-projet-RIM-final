@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
-const authMiddleware = (req, res, next) => {
 
+const authMiddleware = (req, res, next) => {
   // Récupération du token depuis l'en-tête Authorization
   const token = req.header("Authorization")?.split(" ")[1];
 
@@ -11,16 +11,16 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    // Vérifie le token et décode les informations utilisateur
-    const verified = jwt.verify(token, 'zied'); // Utilisation de la clé secrète .env
-
-    req.user = verified;                       // Ajoute les informations de l'utilisateur dans la requête
-
-    next(); // Passe à la route suivante
+    // Vérifie le token avec la clé secrète provenant du .env
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified; // Ajoute les infos utilisateur dans la requête
+    next();
   } catch (err) {
-
-    // Si le token est invalide ou expiré
-    return res.status(400).json({ message: "Token invalide ou expiré" });
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expiré. Veuillez vous reconnecter." });
+    } else {
+      return res.status(400).json({ message: "Token invalide." });
+    }
   }
 };
 

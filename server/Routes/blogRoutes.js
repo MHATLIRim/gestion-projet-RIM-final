@@ -63,7 +63,7 @@ router.get("/:id/recommendations", isAuth, getRecommendedBlogs);
 router.get("/:blogId/comments", isAuth, getCommentsPaginated);
 
 // Routes protégées (commentaire conservé)
-//router.use(authMiddleware);
+router.use(isAuth);
 
 // Gestion des commentaires (inchangée)
 router.post("/:blogId/comments", isAuth, addComment);
@@ -76,7 +76,7 @@ router.put('/:id/tags', isAuth, addTagsToBlog);
 
 // Gestion des blogs (CRUD) - Middleware d'upload ajouté
 const handleFileUpload = (req, res, next) => {
-  upload.single('imageFile')(req, res, function(err) {
+  upload.single('image')(req, res, function(err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ 
         error: true,

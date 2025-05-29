@@ -1,89 +1,36 @@
-<form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" class="container py-4">
-  <h2 class="h3 mb-4 text-center fw-bold">
-    {{ isEditMode ? 'Modifier le Feedback' : 'Envoyer un Feedback' }}
-  </h2>
-  
-  <!-- Titre -->
-  <div class="mb-4">
-    <label for="feedback-title" class="form-label fw-semibold">Titre</label>
-    <input 
-      type="text" 
-      id="feedback-title" 
-      formControlName="title"
-      class="form-control form-control-lg"
-      [ngClass]="{
-        'is-invalid': feedbackForm.get('title')?.invalid && feedbackForm.get('title')?.touched
-      }"
-    >
-    <div *ngIf="feedbackForm.get('title')?.invalid && feedbackForm.get('title')?.touched" 
-         class="invalid-feedback">
-      <i class="bi bi-exclamation-circle me-1"></i>
-      Le titre est requis (minimum 5 caractères)
-    </div>
+<form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" class="card">
+  <h2>Donnez votre avis</h2>
+
+  <label>Titre</label>
+  <input type="text" formControlName="title" />
+  <div *ngIf="feedbackForm.controls['title'].touched && feedbackForm.controls['title'].invalid" class="error">
+    Le titre est requis (min 5 caractères).
   </div>
 
-  <!-- Contenu -->
-  <div class="mb-4">
-    <label for="feedback-content" class="form-label fw-semibold">Contenu</label>
-    <textarea 
-      id="feedback-content" 
-      formControlName="content" 
-      rows="6"
-      class="form-control"
-      [ngClass]="{
-        'is-invalid': feedbackForm.get('content')?.invalid && feedbackForm.get('content')?.touched
-      }"
-    ></textarea>
-    <div *ngIf="feedbackForm.get('content')?.invalid && feedbackForm.get('content')?.touched" 
-         class="invalid-feedback">
-      <i class="bi bi-exclamation-circle me-1"></i>
-      Le contenu est requis (minimum 10 caractères)
-    </div>
+  <label>Contenu</label>
+  <textarea formControlName="content"></textarea>
+  <div *ngIf="feedbackForm.controls['content'].touched && feedbackForm.controls['content'].invalid" class="error">
+    Le contenu est requis (min 10 caractères).
   </div>
 
-  <!-- Catégorie et Tags -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-6">
-      <label for="feedback-category" class="form-label fw-semibold">Catégorie</label>
-      <select 
-        id="feedback-category" 
-        formControlName="category"
-        class="form-select"
-      >
-        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-      </select>
-    </div>
-    <div class="col-md-6">
-      <label for="feedback-tags" class="form-label fw-semibold">
-        Tags <small class="text-muted">(séparés par des virgules)</small>
-      </label>
-      <input 
-        type="text" 
-        id="feedback-tags" 
-        formControlName="tags"
-        class="form-control"
-        placeholder="ex: design, ergonomie, bug"
-      >
-    </div>
-  </div>
+  <label>Catégorie</label>
+  <select formControlName="category">
+    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+  </select>
 
-  <!-- Actions -->
-  <div class="d-flex justify-content-end gap-3 pt-2">
-    <button 
-      type="button" 
-      class="btn btn-outline-secondary px-4"
-      (click)="resetForm()"
-    >
-      <i class="bi bi-x-circle me-2"></i>Annuler
-    </button>
-    <button 
-      type="submit" 
-      class="btn btn-primary px-4"
-      [disabled]="feedbackForm.invalid"
-      [class.btn-warning]="isEditMode"
-    >
-      <i class="bi" [class.bi-send]="!isEditMode" [class.bi-check-circle]="isEditMode"></i>
-      {{ isEditMode ? ' Mettre à jour' : ' Envoyer' }}
-    </button>
+  <label>Tags</label>
+  <input type="text" formControlName="tags" placeholder="ex: ui, bug, performance" />
+
+  <label>Évaluez votre expérience</label>
+  <div class="emoji-row">
+    <span
+      *ngFor="let emoji of emojis; index as i"
+      [class.selected]="i === selectedEmojiIndex"
+      (click)="selectEmoji(i)">
+      {{ emoji }}
+    </span>
   </div>
+  <div *ngIf="selectedEmojiIndex === null" class="error">Sélectionnez une note.</div>
+
+  <button type="submit">Envoyer</button>
 </form>

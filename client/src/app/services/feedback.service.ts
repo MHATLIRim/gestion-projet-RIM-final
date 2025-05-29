@@ -9,20 +9,24 @@ import { Feedback } from '../../../models/feedback.model';
 export class FeedbackService {
   private apiUrl = 'http://localhost:5000/api/feedbacks';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  // ✅ Obtenir tous les feedbacks pour un blog
   getFeedbacksByBlog(blogId: string): Observable<Feedback[]> {
     return this.http.get<Feedback[]>(`${this.apiUrl}/blog/${blogId}`);
   }
 
-  createFeedback(blogId: string, comment: string): Observable<Feedback> {
-    return this.http.post<Feedback>(`${this.apiUrl}/blog/${blogId}`, { comment });
+  // ✅ Créer un nouveau feedback (tous les champs sont envoyés)
+  createFeedback(feedback: Feedback): Observable<Feedback> {
+    return this.http.post<Feedback>(this.apiUrl, feedback);
   }
 
-  updateFeedback(id: string, comment: string): Observable<Feedback> {
-    return this.http.put<Feedback>(`${this.apiUrl}/${id}`, { comment });
+  // ✅ Mettre à jour un feedback existant
+  updateFeedback(id: string, feedback: Partial<Feedback>): Observable<Feedback> {
+    return this.http.put<Feedback>(`${this.apiUrl}/${id}`, feedback);
   }
 
+  // ✅ Supprimer un feedback
   deleteFeedback(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

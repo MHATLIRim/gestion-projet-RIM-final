@@ -61,4 +61,19 @@
       <span *ngIf="isLoading">Envoi en cours...</span>
     </button>
   </div>
-</form>
+
+  <!-- <div class="form-actions">
+    <button type="button" class="btn btn-secondary" (click)="goBack()">Retour</button>
+    <button type="button" class="btn btn-warning" (click)="resetForm()">Réinitialiser</button>
+    <button type="submit" [disabled]="feedbackForm.invalid || isLoading" class="btn btn-primary">
+      <span *ngIf="!isLoading">{{ isEditMode ? 'Mettre à jour' : 'Publier' }}</span>
+      <span *ngIf="isLoading">Envoi en cours...</span>
+    </button>
+  </div>
+  
+  <div *ngIf="feedbackForm.invalid" class="alert alert-warning mt-2">
+    Veuillez remplir tous les champs requis correctement avant de soumettre.
+  </div> -->
+
+
+</form> 
